@@ -44,6 +44,39 @@ let finalTimeDisplay = '0.0s';
 // Scroll
 let valueY = 0;
 
+//Reset the game
+function playAgain(){
+  gamePage.addEventListener('click', startTimer);
+  scorePage.hidden = true;
+  splashPage.hidden = false;
+  equationsArray = [];
+  playerGuessArray = [];
+  valueY = 0;
+}
+
+// Show Score Page
+function showScorePage(){
+  // Show Play again button after 2 seconds
+  gamePage.hidden = true;
+  scorePage.hidden = false;
+  setTimeout(() => {
+    playAgainBtn.hidden = false;
+  }, 2000);
+}
+
+
+// Format & Display Time in DOM
+function scoresToDOM(){
+  finalTimeDisplay = finalTime.toFixed(1);
+  baseTime = timePlayed.toFixed(1);
+  penaltyTime = penaltyTime.toFixed(1);
+  baseTimeEl.textContent = `Base Time: ${baseTime}s`;
+  penaltyTimeEl.textContent = `Penalty: +${penaltyTime}s`;
+  finalTimeEl.textContent = `${finalTimeDisplay}s`;
+  itemContainer.scrollTo({ top: 0, behavior: 'instant'});
+  showScorePage();
+}
+
 // Stop Timer, Process Results, go to Score page
 function checkTime(){
   console.log(timePlayed);
@@ -56,11 +89,12 @@ function checkTime(){
         // Correct Guess, No penalty
       } else {
         //Incorrect Guess, Add penalty
-        penaltyTime + 1;
+        penaltyTime += 1;
       }
     });
     finalTime = timePlayed + penaltyTime;
     console.log('time', timePlayed, 'penalty', penaltyTime, 'final:', finalTime);
+    scoresToDOM();
   }
 }
 
